@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from . models import Album
+from .models import Album, Listening
+from .forms import ListeningForm
 
     # Create your views here.
 def home(request):
@@ -15,8 +16,16 @@ def albums_index(request):
 
 def albums_detail(request, album_id):
     album = Album.objects.get(id=album_id)
-    return render(request, 'albums/detail.html', {'album': album})
+    listening_form = ListeningForm()
+    return render(request, 'albums/detail.html', {'album': album, 'listening_form': listening_form})
 
+def add_listening(request, album_id):
+  form = ListeningForm(request.POST)
+  if form.is_valid():
+      new_listening = form.save(commit=False)
+      new_listening.album_id = album_id
+      new_listening.save()
+  return redirect('detail', album_id=album_id)
 class AlbumCreate(CreateView):
     model = Album
     fields = '__all__'
