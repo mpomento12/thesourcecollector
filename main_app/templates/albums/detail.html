@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Album Details</h1>
+
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ album.title }}</span>
+    <p>Artist: {{ album.artist }}</p>
+    <p>Label: {{ album.label }}</p>
+    <p>Release: {{ album.release }}</p>
+  </div>
+  <div class="card-action">
+      <a href="{% url 'albums_update' album.id %}">Edit</a>
+      <a href="{% url 'albums_delete' album.id %}">Delete</a>
+  </div>
+</div>
+
+{% endblock %}
