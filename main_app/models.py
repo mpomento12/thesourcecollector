@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 # Create your models here.
 LISTEN = (
@@ -8,11 +9,21 @@ LISTEN = (
     ('O', 'Osario')
 )
 
+class Format(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('formats_detail', kwargs={'pk': self.id})
+
 class Album(models.Model):
     title = models.CharField(max_length=100)
     artist = models.CharField(max_length=100)
     label = models.CharField(max_length=100)
     release = models.IntegerField()
+    formats = models.ManyToManyField(Format)
     
 
     def __str__(self):
